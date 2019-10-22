@@ -11,8 +11,12 @@
     z-index: 1;
     width: 100%;
 }
+.swiper-wrapper {
+    display:flex;
+}
 .swiper-container{
     width: 100%;
     flex:1;
     display:flex;
+    overflow: scroll;
 }

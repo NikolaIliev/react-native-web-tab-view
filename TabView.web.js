@@ -5,17 +5,9 @@ import TabBar from './TabBar'
 
 const convertToSwiperParams = (
   {
-    onSwipeStart, // TODO mySwiper.on('slideChangeTransitionStart', function () {
-    onSwipeEnd, // TODO mySwiper.on('slideChangeTransitionEnd', function () {
-    removeClippedSubviews, // TODO
-    // keyboardDismissMode,// TODO not needed
-    swipeEnabled, // TODO
-    swipeVelocityImpact, // TODO
-    timingConfig, // TODO
-    springConfig, // TODO
-    gestureHandlerProps, // TODO,
-
-    springVelocityScale, // TODO
+    onSwipeStart,
+    onSwipeEnd,
+    swipeEnabled
   },
   slideChange
 ) => {
@@ -28,6 +20,7 @@ const convertToSwiperParams = (
     // slidesPerView: 'auto',
     preventClicksPropagation: false,
     preventClicks: false,
+    simulateTouch: false,
     touchStartPreventDefault: false,
 
     // scrollContainer: true,
@@ -53,7 +46,7 @@ const convertToSwiperParams = (
   }
 }
 
-class TabView extends React.Component {
+export default class TabView extends React.Component {
   static defaultProps = {
     tabBarPosition: 'top',
     renderTabBar: props => <TabBar {...props} />,
@@ -80,7 +73,7 @@ class TabView extends React.Component {
     const index = navigationState.routes.findIndex(route => route.key === key)
 
     // console.log(this.swiper)
-    this.swiper.slideTo(index, 0, false)
+    this.swiper.slideTo(index)
     this._jumpToIndex(index)
   }
   _slideChange = () => {
@@ -116,7 +109,7 @@ class TabView extends React.Component {
           params={convertToSwiperParams(this.props, this._slideChange)}
           ref={this._onRef}
         >
-          {navigationState.routes.map((route, i) => (
+          {navigationState.routes.map(route => (
             <div key={route.key} className="swiper-slide">
               {renderScene({
                 jumpTo: this._jumpToKey,
@@ -137,5 +130,3 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 })
-
-export default TabView

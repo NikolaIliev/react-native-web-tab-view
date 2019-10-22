@@ -20,6 +20,8 @@ export default class TabBar extends React.Component {
     renderIndicator: props => <TabBarIndicator {...props} />,
   }
 
+  tabBarItemRefs = []
+
   _onRef = node => {
     if (node) {
       this.swiper = node.swiper
@@ -30,6 +32,10 @@ export default class TabBar extends React.Component {
       this.props.tabViewRef.controller.control = this.swiper
       this.swiper.controller.control = this.props.tabViewRef
     }
+
+    const { navigationState } = this.props
+
+    this.tabBarItemRefs.forEach(el => el.onUpdate(navigationState))
   }
 
   render() {
@@ -58,6 +64,8 @@ export default class TabBar extends React.Component {
     } = this.props
     const { routes } = navigationState
 
+    console.log('helloooo render tab bar')
+
     const swiperParams = {
       slidesPerView: scrollEnabled ? 'auto' : routes.length,
       // paginationClickable: true,
@@ -70,37 +78,38 @@ export default class TabBar extends React.Component {
       // grabCursor: true,
       watchSlidesProgress: true,
       slideClass: 'swiper-tab-item',
-      // renderProgressbar: function(progressbarFillClass) {
-      //   return this.props.renderIndicator({
-      //     style: indicatorStyle,
-      //   })
-      // },
-      // on: {
-      //   progress: function(progress, second) {
-      //     // var swiper = this
-      //     // console.log(progress, second)
-      //     // var slideProgress = swiper.progress
-      //     // console.log(slideProgress)
-      //     // console.log(activeSlide)
-      //     // console.log('ACTIVE SLIDE', activeSlide.offsetLeft)
-      //     // for (var i = 0; i < swiper.slides.length; i++) {
-      //     //   console.log(swiper.slides[i])
-      //     //   const offset =
-      //     //     window.innerWidth -
-      //     //     (swiper.slides[i].getBoundingClientRect().left +
-      //     //       swiper.slides[i].offsetWidth)
-      //     //   console.log(swiper.width, 'swiper width')
-      //     //   console.log(offset)
-      //     //   // var slideProgress = swiper.slides[i].progress
-      //     //   // var innerOffset = swiper.width * 1.9
-      //     //   // var innerTranslate = slideProgress * innerOffset
-      //     //   // console.log(slideProgress)
-      //     //   // console.log('inner translate', innerTranslate)
-      //     //   // swiper.slides[i].querySelector('.slide-inner').style.transform =
-      //     //   //   'translate3d(' + innerTranslate + 'px, 0, 0)'
-      //     // }
-      //   },
-      // },
+      renderProgressbar: function(progressbarFillClass) {
+        return this.props.renderIndicator({
+          style: this.props.indicatorStyle,
+        })
+      },
+      on: {
+        progress: function(progress, second) {
+          console.log({ progress, second })
+          // var swiper = this
+          // console.log(progress, second)
+          // var slideProgress = swiper.progress
+          // console.log(slideProgress)
+          // console.log(activeSlide)
+          // console.log('ACTIVE SLIDE', activeSlide.offsetLeft)
+          // for (var i = 0; i < swiper.slides.length; i++) {
+          //   console.log(swiper.slides[i])
+          //   const offset =
+          //     window.innerWidth -
+          //     (swiper.slides[i].getBoundingClientRect().left +
+          //       swiper.slides[i].offsetWidth)
+          //   console.log(swiper.width, 'swiper width')
+          //   console.log(offset)
+          //   // var slideProgress = swiper.slides[i].progress
+          //   // var innerOffset = swiper.width * 1.9
+          //   // var innerTranslate = slideProgress * innerOffset
+          //   // console.log(slideProgress)
+          //   // console.log('inner translate', innerTranslate)
+          //   // swiper.slides[i].querySelector('.slide-inner').style.transform =
+          //   //   'translate3d(' + innerTranslate + 'px, 0, 0)'
+          // }
+        },
+      },
 
       // onTab: function(swiper) {
       //   // var n = swiper1.clickedIndex;
@@ -108,13 +117,14 @@ export default class TabBar extends React.Component {
       // },
     }
 
-    // console.log('NAVIGATIONSTATE',navigationState.index)
+    console.log('helloo NAVIGATIONSTATE',navigationState.index)
     return (
       <View style={[styles.tabBar, style]}>
         <Swiper params={swiperParams} ref={this._onRef}>
           {routes.map((route, tabIndex) => (
             <div key={route.key} className="swiper-tab-item">
               <TabBarItem
+                ref={item => this.tabBarItemRefs.push(item)}
                 tabIndex={tabIndex}
                 position={position}
                 route={route}

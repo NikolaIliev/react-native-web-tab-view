@@ -5,10 +5,25 @@ const DEFAULT_ACTIVE_COLOR = 'rgba(255, 255, 255, 1)'
 const DEFAULT_INACTIVE_COLOR = 'rgba(255, 255, 255, 0.7)'
 
 export default class TabBarItem extends React.Component {
+  state = {
+    navigationState: null
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.navigationState) {
+      return
+    }
+
+    return { navigationState: nextProps.navigationState }
+  }
+
+  onUpdate(navigationState) {
+    this.setState({ navigationState })
+  }
+
   render() {
     const {
       route,
-      navigationState,
       renderLabel: renderLabelPassed,
       renderIcon,
       renderBadge,
@@ -27,11 +42,14 @@ export default class TabBarItem extends React.Component {
       onLongPress,
       tabIndex,
     } = this.props
+    const { navigationState } = this.state
 
     const isFocused = navigationState.index === tabIndex
 
-    const activeOpacity = 1
-    const inactiveOpacity = 0
+    console.log('helloooo', navigationState.index, tabIndex)
+
+    const activeOpacity = isFocused ? 1 : 0
+    const inactiveOpacity = isFocused ? 0 : 1
 
     let icon = null
     let label = null
