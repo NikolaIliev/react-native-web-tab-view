@@ -64,8 +64,6 @@ export default class TabBar extends React.Component {
     } = this.props
     const { routes } = navigationState
 
-    console.log('helloooo render tab bar')
-
     const swiperParams = {
       slidesPerView: scrollEnabled ? 'auto' : routes.length,
       // paginationClickable: true,
@@ -85,7 +83,6 @@ export default class TabBar extends React.Component {
       },
       on: {
         progress: function(progress, second) {
-          console.log({ progress, second })
           // var swiper = this
           // console.log(progress, second)
           // var slideProgress = swiper.progress
@@ -117,7 +114,6 @@ export default class TabBar extends React.Component {
       // },
     }
 
-    console.log('helloo NAVIGATIONSTATE',navigationState.index)
     return (
       <View style={[styles.tabBar, style]}>
         <Swiper params={swiperParams} ref={this._onRef}>

@@ -13,15 +13,16 @@ const convertToSwiperParams = (
 ) => {
   return {
     noSwiping: !swipeEnabled,
+    threshold: 20,
     // rebuildOnUpdate: true,
     // shouldSwiperUpdate: true,
     grabCursor: false,
     // wrapperClass: 'swiper-wrapper',
     // slidesPerView: 'auto',
-    preventClicksPropagation: false,
-    preventClicks: false,
-    simulateTouch: false,
-    touchStartPreventDefault: false,
+    // preventClicksPropagation: false,
+    // preventClicks: false,
+    // simulateTouch: false,
+    // touchStartPreventDefault: false,
 
     // scrollContainer: true,
     // scrollbar: { el: '.swiper-scrollbar' },
@@ -39,7 +40,6 @@ const convertToSwiperParams = (
         onSwipeEnd && onSwipeEnd()
       },
       slideChange: function(e) {
-        console.log(e)
         slideChange && slideChange()
       },
     },
