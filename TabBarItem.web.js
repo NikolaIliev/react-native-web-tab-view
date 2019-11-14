@@ -46,8 +46,6 @@ export default class TabBarItem extends React.Component {
 
     const isFocused = navigationState.index === tabIndex
 
-    console.log('helloooo', navigationState.index, tabIndex)
-
     const activeOpacity = isFocused ? 1 : 0
     const inactiveOpacity = isFocused ? 0 : 1
 
