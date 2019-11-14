@@ -61,6 +61,20 @@ export default class TabView extends React.Component {
     gestureHandlerProps: {},
   }
 
+  componentDidMount() {
+    const { navigationState: { index } } = this.props
+
+    this.swiper.slideTo(index, 0)
+  }
+
+  componentDidUpdate({ navigationState: { index: prevIndex } }) {
+    const { navigationState: { index } } = this.props
+
+    if (index !== prevIndex) {
+      this.swiper.slideTo(index, 0)
+    }
+  }
+
   _jumpToIndex = index => {
     if (index !== this.props.navigationState.index) {
       // console.log(' DO THE INDEX CHANGE BABY', index)
