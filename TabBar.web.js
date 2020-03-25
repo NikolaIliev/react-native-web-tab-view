@@ -27,13 +27,23 @@ export default class TabBar extends React.Component {
       this.swiper = node.swiper
     }
   }
-  componentDidUpdate() {
-    if (this.swiper && this.props.tabViewRef) {
-      this.props.tabViewRef.controller.control = this.swiper
-      this.swiper.controller.control = this.props.tabViewRef
-    }
+  componentDidUpdate({ navigationState: prevNavigationState }) {
+    // if (this.swiper && this.props.tabViewRef) {
+    //   this.props.tabViewRef.controller.control = this.swiper
+    //   this.swiper.controller.control = this.props.tabViewRef
+    // }
 
     const { navigationState } = this.props
+
+    const { index: currentIndex } = navigationState
+    const { index: prevIndex } = prevNavigationState
+
+    if (this.swiper && currentIndex !== prevIndex) {
+      // Slide to previous index if possible so the current tab is kind of centered
+      let indexToSlideTo = Math.max(0, currentIndex - 1)
+
+      this.swiper.slideTo(indexToSlideTo, 200)
+    }
 
     this.tabBarItemRefs.forEach(el => el.onUpdate(navigationState))
   }
